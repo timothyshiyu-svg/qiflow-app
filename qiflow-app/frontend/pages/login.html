@@ -1,0 +1,22 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>QiFlow - 登录</title><script src="https://cdn.tailwindcss.com"></script><script>tailwind.config={theme:{extend:{colors:{ink:'#2d5f5d',amber:'#d4a373'}}}}</script>
+<link rel="stylesheet" href="../css/style.css"/><script src="../js/i18n.js"></script><script src="../js/state.js"></script><script src="../js/nav.js"></script></head>
+<body class="bg-slate-50"><main class="max-w-md mx-auto min-h-screen pb-24"><header class="bg-ink text-white p-4 rounded-b-3xl"><h1 class="text-xl font-bold">登录 / Login</h1></header>
+<section class="p-4"><div class="bg-white rounded-2xl p-4 shadow"><input id="email" class="border rounded p-2 w-full" placeholder="email"/>
+<input id="name" class="border rounded p-2 w-full mt-2" placeholder="昵称"/><button class="mt-3 bg-amber text-white w-full py-2 rounded-xl" onclick="login()">登录</button>
+<p id="tip" class="text-xs text-slate-500 mt-2"></p></div></section><nav id="bottomNav" class="fixed bottom-0 left-0 right-0 bg-white border-t p-2"></nav></main>
+<script>
+renderNav('bottomNav',true);
+async function login(){
+  const email=document.getElementById('email').value.trim();
+  const name=document.getElementById('name').value.trim()||'QiFlow用户';
+  if(!email){document.getElementById('tip').innerText='请输入邮箱';return}
+  try{
+    const r=await fetch('http://localhost:8787/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,name})});
+    const d=await r.json();
+    if(!d.ok) throw new Error(d.message||'登录失败');
+    saveUser(d.user); localStorage.setItem('qiflow_token', d.token);
+    location.href='me.html';
+  }catch(e){document.getElementById('tip').innerText='登录失败：'+e.message}
+}
+</script></body></html>

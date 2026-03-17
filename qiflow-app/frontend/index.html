@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QiFlow 五音通脉疗愈</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{ink:'#2d5f5d',amber:'#d4a373'}}}}</script>
+  <link rel="stylesheet" href="./css/style.css"/>
+  <script src="./js/i18n.js"></script><script src="./js/nav.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <main class="max-w-md mx-auto min-h-screen pb-24 fade-in">
+    <header class="bg-ink text-white p-4 rounded-b-3xl shadow">
+      <div class="flex justify-between items-center">
+        <div><h1 class="text-2xl font-bold" id="w"></h1><p class="text-sm opacity-90" id="s"></p></div>
+        <select onchange="setLocale(this.value)" class="text-black rounded px-2"><option value="zh-CN">中文</option><option value="en-US">EN</option></select>
+      </div>
+    </header>
+
+    <section class="p-4 space-y-3">
+      <div class="bg-white rounded-2xl p-4 shadow">
+        <h2 class="font-semibold text-ink">3分钟基础体质测评</h2>
+        <p class="text-sm text-slate-600 mt-1">当前倾向：<span class="font-bold text-amber">肝郁气滞</span></p>
+      </div>
+
+      <div class="bg-white rounded-2xl p-4 shadow">
+        <h2 class="font-semibold text-ink">情绪卡片</h2>
+        <div class="grid grid-cols-3 gap-2 mt-3" id="emotionCards"></div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-4 shadow">
+        <h2 class="font-semibold text-ink">AI分析结果</h2>
+        <pre id="analysis" class="text-xs bg-slate-100 p-3 rounded mt-2"></pre>
+        <button id="runBtn" class="mt-3 w-full bg-amber text-white py-2 rounded-xl">运行分析（≤500ms）</button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 mt-2">
+        <a href="./pages/constitution.html" class="bg-ink text-white text-center py-2 rounded-xl">体质测评V2</a>
+        <a href="./pages/scenarios.html" class="bg-amber text-white text-center py-2 rounded-xl">四大场景V2</a>
+      </div>
+
+      <a href="./pages/privacy.html" class="text-sm text-ink underline">查看隐私与合规说明</a>
+    </section>
+
+    <nav id="bottomNav" class="fixed bottom-0 left-0 right-0 bg-white border-t p-2"></nav>
+  </main>
+
+<script src="./js/app.js"></script>
+<script>
+document.getElementById('w').innerText=t('welcome');
+document.getElementById('s').innerText=t('subtitle');
+renderNav('bottomNav',false);
+</script>
+</body>
+</html>

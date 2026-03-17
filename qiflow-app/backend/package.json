@@ -1,0 +1,17 @@
+{
+  "name": "qiflow-backend",
+  "version": "1.0.0",
+  "description": "QiFlow backend API",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node src/server.js",
+    "start": "NODE_ENV=production node src/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "sqlite3": "^5.1.7",
+    "uuid": "^11.0.3"
+  }
+}

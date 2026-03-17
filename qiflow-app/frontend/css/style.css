@@ -1,0 +1,3 @@
+:root{--ink:#2d5f5d;--amber:#d4a373}
+.fade-in{animation:fade .5s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}

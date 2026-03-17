@@ -1,0 +1,13 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>体质测评</title><script src="https://cdn.tailwindcss.com"></script><script src='../js/state.js'></script><script>tailwind.config={theme:{extend:{colors:{ink:'#2d5f5d',amber:'#d4a373'}}}}</script><link rel="stylesheet" href="../css/style.css"/></head>
+<body class="bg-slate-50"><main class="max-w-md mx-auto min-h-screen p-4 pb-24"><h1 class="text-2xl font-bold text-ink">3分钟体质测评</h1>
+<p class="text-sm text-slate-600 mt-1">每题1-5分（1=从不，5=经常）</p>
+<div id="q" class="space-y-2 mt-3"></div>
+<button id="submit" class="mt-4 w-full bg-amber text-white py-2 rounded-xl">提交测评</button>
+<pre id="out" class="text-xs bg-white rounded p-3 mt-3"></pre>
+</main><script src='../js/state.js'></script><script>
+const qs=['容易疲劳','手脚发凉','口干咽燥','痰多困重','口苦口黏','固定刺痛','情绪郁闷','易过敏','总体平衡感好'];
+const box=document.getElementById('q');
+qs.forEach((t,i)=>{const d=document.createElement('div');d.className='bg-white p-3 rounded shadow';d.innerHTML=`<div class='text-sm'>${i+1}. ${t}</div><input type='range' min='1' max='5' value='3' class='w-full' id='a${i}'>`;box.appendChild(d)});
+document.getElementById('submit').onclick=async()=>{const answers=qs.map((_,i)=>+document.getElementById('a'+i).value);const r=await fetch('http://localhost:8787/api/constitution/assess',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({answers})});const d=await r.json();if(d.ok){localStorage.setItem('qiflow_constitution',JSON.stringify(d.result));}document.getElementById('out').textContent=JSON.stringify(d,null,2)};
+</script></body></html>

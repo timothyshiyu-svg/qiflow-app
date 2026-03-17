@@ -1,0 +1,25 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>仪表盘</title><script src="https://cdn.tailwindcss.com"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script><script>tailwind.config={theme:{extend:{colors:{ink:'#2d5f5d',amber:'#d4a373'}}}}</script>
+<script src="../js/state.js"></script><script src="../js/nav.js"></script><script src="../js/layout.js"></script></head>
+<body class="bg-slate-50"><main class="max-w-md mx-auto pb-24"><div id="hdr"></div>
+<section class="p-4"><div class='flex gap-2'><button id='d7' class='bg-ink text-white rounded px-3 py-1 text-sm'>7天</button><button id='d30' class='bg-slate-200 rounded px-3 py-1 text-sm'>30天</button><button onclick='window.print()' class='bg-amber text-white rounded px-3 py-1 text-sm'>导出PDF</button></div>
+<canvas id="c" class="bg-white rounded p-2 mt-3"></canvas><pre id="s" class="text-xs bg-white rounded p-3 mt-3"></pre></section>
+<nav id="bottomNav" class="fixed bottom-0 left-0 right-0 bg-white border-t p-2"></nav></main>
+<script>
+injectHeader('hdr','修复报告仪表盘','趋势追踪与方案迭代');
+renderNav('bottomNav',true);
+let chart;
+const base7={labels:['D1','D2','D3','D4','D5','D6','D7'],pressure:[72,68,61,59,57,52,49],sleep:[58,62,66,71,74,79,83]};
+const base30={labels:Array.from({length:30},(_,i)=>'D'+(i+1)),pressure:Array.from({length:30},(_,i)=>78-Math.round(i*0.9)),sleep:Array.from({length:30},(_,i)=>56+Math.round(i*0.8))};
+function draw(m){
+  const d=m===30?base30:base7;
+  if(chart) chart.destroy();
+  chart=new Chart(document.getElementById('c'),{type:'line',data:{labels:d.labels,datasets:[{label:'压力指数',data:d.pressure,borderColor:'#2d5f5d'},{label:'睡眠评分',data:d.sleep,borderColor:'#d4a373'}]}});
+}
+async function load(){
+  try{const r=await fetch('http://localhost:8787/api/report/dashboard/demo');const j=await r.json();saveReport(j.data);document.getElementById('s').textContent=j.data.summary}catch(e){const c=getReport();document.getElementById('s').textContent=c?c.summary:'请先启动后端API'}
+}
+draw(7);load();
+document.getElementById('d7').onclick=()=>draw(7);
+document.getElementById('d30').onclick=()=>draw(30);
+</script></body></html>
